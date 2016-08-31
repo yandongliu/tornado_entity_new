@@ -22,7 +22,7 @@ def upgrade():
         sa.Column('uuid', sa.CHAR(length=36), primary_key=True),
         sa.Column('tag_type', sa.String(length=36), nullable=False, index=True),
         sa.Column('tag_name', sa.String(length=36), nullable=False, index=False),
-        sa.Column('parent_uuid', sa.CHAR(length=36), nullable=False, index=False),
+        sa.Column('parent_uuid', sa.CHAR(length=36), sa.ForeignKey('tag.uuid'), nullable=False, index=False),
         sa.Column('created_at', sa.DateTime, nullable=False, index=False),
     )
 

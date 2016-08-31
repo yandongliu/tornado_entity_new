@@ -85,3 +85,13 @@ def lint():
 @task
 def serve():
     local('python app.py')
+
+
+@task
+def downgrade():
+    local('alembic downgrade -1')
+
+
+@task
+def migrate_db():
+    local('alembic upgrade head')

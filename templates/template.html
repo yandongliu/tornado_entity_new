@@ -4,9 +4,21 @@
    </head>
    <body>
      <ul>
-       {% for item in items %}
-         <li>{{ escape(item) }}</li>
+       {% for tag in tags %}
+         <li><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a> <a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a> {{tag.tag_type}} {{ tag.tag_name }}</li>
        {% end %}
      </ul>
+     <form action='/http_api/tag/' method="POST">
+        <label>Tag UUID</label>
+        <input type=text name="uuid" />
+        <label>Parent UUID</label>
+        <input type=text name="parent_uuid" />
+        <label>Tag Type</label>
+        <input type=text name="tag_type" />
+        <label>Tag Name</label>
+        <input type=text name="tag_name" />
+        <br/>
+        <input type=submit>
+    </form>
    </body>
  </html>

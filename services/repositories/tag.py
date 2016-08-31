@@ -26,7 +26,6 @@ class TagRepository(object):
 
     @classmethod
     def upsert(cls, entity):
-        # import pdb; pdb.set_trace()
         with rw_transaction() as session:
             _entity = cls.read_one(entity.uuid)
             if _entity:

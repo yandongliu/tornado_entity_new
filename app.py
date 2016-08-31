@@ -4,7 +4,7 @@ import tornado.ioloop
 import tornado.web
 
 import config
-from handlers.database import DatabaseHandler
+from handlers import api, http_api
 from handlers.async_fetch import AsyncFetchHandler
 from handlers.main import MainHandler
 from handlers.json_api import JsonApiHandler
@@ -15,7 +15,9 @@ def make_application():
     _app = tornado.web.Application([
         (r"/", MainHandler),
         (r"/api/json_api", JsonApiHandler),
-        (r"/db", DatabaseHandler),
+        (r"/api/tag", api.TagHandler),
+        (r"/http_api/tag/", http_api.TagHandler),
+        (r"/http_api/tag/(?P<tag_uuid>[^\/]*)", http_api.TagHandler),
         (r"/async_fetch", AsyncFetchHandler),
     ], **settings)
     return _app

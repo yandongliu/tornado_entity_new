@@ -10,7 +10,7 @@ from services.repositories.tag import TagRepository
 from entities import Tag
 
 
-class DatabaseHandler(RequestHandler):
+class TagHandler(RequestHandler):
 
     @gen.coroutine
     def get(self):
@@ -21,7 +21,6 @@ class DatabaseHandler(RequestHandler):
     def post(self):
         # import pdb; pdb.set_trace()
         data = json.loads(self.request.body)
-        data['uuid'] = str(uuid4())
         tag = Tag(data)
         tag.validate()
         TagRepository.upsert(tag)

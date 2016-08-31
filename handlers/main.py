@@ -1,9 +1,10 @@
 from __future__ import absolute_import
 
 from .base import BaseHandler
+from services.repositories.tag import TagRepository
 
 
 class MainHandler(BaseHandler):
     def get(self):
-        items = ["Item 1", "Item 2", "Item 3"]
-        self.render("template.html", title="My title", items=items)
+        tags = TagRepository.read_all()
+        self.render("template.html", title="My title", tags=tags)
