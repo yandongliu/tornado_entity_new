@@ -4,13 +4,14 @@
    </head>
    <body>
      <ul>
+        <li> uuid, parent_uuid, tag_type, tag_name
        {% for tag in tags %}
-         <li><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a> <a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a> {{tag.tag_type}} {{ tag.tag_name }}</li>
+         <li><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a> <a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a> {{tag.tag_type}} {{ tag.tag_name }} <a href="http_api/delete_tag/{{tag.uuid}}">delete</a></li>
        {% end %}
      </ul>
      <form action='/http_api/tag/' method="POST">
         <label>Tag UUID</label>
-        <input type=text name="uuid" />
+        <input type=text name="uuid" value="{{random_uuid}}" />
         <label>Parent UUID</label>
         <input type=text name="parent_uuid" />
         <label>Tag Type</label>

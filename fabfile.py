@@ -3,8 +3,9 @@ from __future__ import absolute_import
 from fabric.api import task, local
 from fabric.colors import green
 import sqlalchemy_utils
+import ujson as json
 
-from entities import Item, User
+from entities import Item, Tag, User
 from models.base import (
     create_all_tables,
     engine,
@@ -12,6 +13,7 @@ from models.base import (
     rw_transaction,
 )
 from models import Item as ModelItem, User as ModelUser
+from services.repositories.tag import TagRepository
 
 
 @task
@@ -75,6 +77,23 @@ def fake_item(environment='development'):
         model_item = ModelItem(**item.to_primitive())
         session.add(model_user)
         session.add(model_item)
+
+
+@task
+def export_tags(environment='development', output='output.txt'):
+    """Dump all tags."""
+    with open(output, 'w') as f:
+        tags = TagRepository.read_all()
+        for tag in tags:
+            f.write('{}\n'.format(json.dumps(tag.to_primitive())))
+
+@task
+def import_tags(environment='development', output='output.txt'):
+    """Dump all tags."""
+    with open(output, 'r') as f:
+        for l in f:
+            tag = Tag(json.loads(l.strip()))
+            TagRepository.upsert(tag)
 
 
 @task

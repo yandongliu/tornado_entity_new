@@ -14,9 +14,14 @@ class TagHandler(RequestHandler):
 
     @gen.coroutine
     def get(self, tag_uuid):
-        tag = TagRepository.read_one(tag_uuid)
-        if tag:
-            self.write({'data': tag.to_primitive()})
+        self_node = TagRepository.read_one(tag_uuid)
+        tag_nodes = TagRepository.read_chain(tag_uuid)
+        # import pdb; pdb.set_trace()
+        if self_node:
+            self.write({
+                'self': self_node.to_primitive(),
+                'children': [node.to_primitive() for node in tag_nodes]
+            })
         else:
             self.write('404')
 
@@ -37,3 +42,11 @@ class TagHandler(RequestHandler):
         tag.validate()
         TagRepository.upsert(tag)
         self.write('OK')
+
+
+class DeleteTagHandler(RequestHandler):
+
+    @gen.coroutine
+    def get(self, tag_uuid):
+        TagRepository.delete(tag_uuid)
+        self.write('ok')

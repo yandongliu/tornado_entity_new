@@ -16,8 +16,10 @@ def make_application():
         (r"/", MainHandler),
         (r"/api/json_api", JsonApiHandler),
         (r"/api/tag", api.TagHandler),
+        (r"/api/tag/(?P<tag_uuid>[^\/]*)", api.TagHandler),
         (r"/http_api/tag/", http_api.TagHandler),
         (r"/http_api/tag/(?P<tag_uuid>[^\/]*)", http_api.TagHandler),
+        (r"/http_api/delete_tag/(?P<tag_uuid>[^\/]*)", http_api.DeleteTagHandler),
         (r"/async_fetch", AsyncFetchHandler),
     ], **settings)
     return _app
