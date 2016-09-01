@@ -12,6 +12,7 @@ class Tag(Model):
     uuid = UUIDType(required=True)
     tag_type = StringType(required=True)
     tag_name = StringType(required=True)
+    value = StringType(required=True)
     parent_uuid = UUIDType(required=True)
     created_at = DateTimeType(default=datetime.utcnow, required=True)
 

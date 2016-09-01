@@ -3,12 +3,13 @@
       <title>{{ title }}</title>
    </head>
    <body>
-     <ul>
-        <li> uuid, parent_uuid, tag_type, tag_name
+     <table>
+        <tr> <th>uuid</th> <th>parent uuid</th> <th>tag type</th> <th>tag name</th> <th>tag value</th> <th>add</th> <th>delete</th></tr>
        {% for tag in tags %}
-         <li><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a> <a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a> {{tag.tag_type}} {{ tag.tag_name }} <a href="http_api/delete_tag/{{tag.uuid}}">delete</a></li>
+         <tr><td><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a></td> <td><a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a></td> <td>{{tag.tag_type}}</td> <td>{{ tag.tag_name }}</td> <td>{{ tag.value}}</td> <td><a href="#">add a sub tag</a></td> <td><a href="http_api/delete_tag/{{tag.uuid}}">delete</a></td></tr>
        {% end %}
-     </ul>
+     </table>
+<hr/>
      <form action='/http_api/tag/' method="POST">
         <label>Tag UUID</label>
         <input type=text name="uuid" value="{{random_uuid}}" />
@@ -18,6 +19,8 @@
         <input type=text name="tag_type" />
         <label>Tag Name</label>
         <input type=text name="tag_name" />
+        <label>Tag Value</label>
+        <input type=text name="value" />
         <br/>
         <input type=submit>
     </form>
