@@ -1,11 +1,15 @@
 from datetime import datetime
+import re
 
+from schematics.exceptions import ValidationError
 from schematics.models import Model
 from schematics.types import DateTimeType, IntType, StringType, UUIDType
 from schematics.types.compound import ListType, ModelType
 
 from .base import UuidStringType
 
+
+p_tag_type = re.compile('^[\d\w_]+$')
 
 class Tag(Model):
 
@@ -15,6 +19,11 @@ class Tag(Model):
     value = StringType(required=True)
     parent_uuid = UUIDType(required=True)
     created_at = DateTimeType(default=datetime.utcnow, required=True)
+ 
+    def validate(self):
+        if not p_tag_type.match(self.tag_type):
+            raise ValidationError('Improper tag type')
+        super(Tag, self).validate()
 
 
 class TagNode(Model):

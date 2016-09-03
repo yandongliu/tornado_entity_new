@@ -34,7 +34,7 @@ class TagRepository(object):
             return nodes
         children = cls.read_many_by_parent_uuid(uuid)
         for child in children:
-            print child.to_primitive()
+            # print child.to_primitive()
             children_ = cls.read_chain(child.uuid, depth + 1, max_depth)
             node = TagNode(child)
             node.children = children_
@@ -52,6 +52,7 @@ class TagRepository(object):
 
     @classmethod
     def upsert(cls, entity):
+        entity.validate()
         with rw_transaction() as session:
             _entity = cls.read_one(entity.uuid)
             if _entity:

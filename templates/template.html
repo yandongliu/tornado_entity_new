@@ -4,17 +4,18 @@
    </head>
    <body>
      <table>
-        <tr> <th>uuid</th> <th>parent uuid</th> <th>tag type</th> <th>tag name</th> <th>tag value</th> <th>add</th> <th>delete</th></tr>
+        <tr> <th>chain</th> <th>parent</th> <th>tag type(enum)</th> <th>tag name(display)</th> <th>tag value(instance)</th> <th>sub</th> <th>delete</th> <th>edit</th></tr>
        {% for tag in tags %}
-         <tr><td><a href="/http_api/tag/{{tag.uuid}}">{{tag.uuid}}</a></td> <td><a href="/http_api/tag/{{tag.parent_uuid}}">{{tag.parent_uuid}}</a></td> <td>{{tag.tag_type}}</td> <td>{{ tag.tag_name }}</td> <td>{{ tag.value}}</td> <td><a href="#">add a sub tag</a></td> <td><a href="http_api/delete_tag/{{tag.uuid}}">delete</a></td></tr>
+         <tr><td><a href="/http_api/tag/{{tag.tag.uuid}}">chain</a></td> <td><a href="/http_api/tag/{{tag.tag.parent_uuid}}">parent</a></td> <td>{{tag.tag.tag_type}}</td> <td>{{ tag.tag.tag_name }}</td> <td>{{ tag.tag.value}}</td> <td><a href="http_api/add_sub/{{tag.tag.uuid}}">add</a></td> <td><a href="http_api/delete_tag/{{tag.tag.uuid}}">delete</a></td> <td><a href="http_api/edit/{{tag.tag.uuid}}">edit</a></td></tr>
        {% end %}
      </table>
 <hr/>
+<p>Add a top category</p>
      <form action='/http_api/tag/' method="POST">
         <label>Tag UUID</label>
         <input type=text name="uuid" value="{{random_uuid}}" />
         <label>Parent UUID</label>
-        <input type=text name="parent_uuid" />
+        <input type=text name="parent_uuid" value="{{root_uuid}}"/>
         <label>Tag Type</label>
         <input type=text name="tag_type" />
         <label>Tag Name</label>
@@ -24,5 +25,9 @@
         <br/>
         <input type=submit>
     </form>
+<hr/>
+<p>
+Everything is a tag including category and entities, making everything extensible.
+</p>
    </body>
  </html>

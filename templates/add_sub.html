@@ -1,0 +1,27 @@
+<html>
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <body>
+     <form action='/http_api/add_sub/' method="POST">
+        <ul>
+        <li>
+        <label>Tag UUID</label>
+        <input type=text name="uuid" size="80" value="{{random_uuid}}" />
+        <li>
+        <label>Parent UUID</label>
+        <input type=text name="parent_uuid" size="80" value="{{tag.uuid}}"/>
+        <li>
+        <label>Tag Type</label>
+        <input type=text name="tag_type" size="80" />
+        <li>
+        <label>Tag Name</label>
+        <input type=text name="tag_name" size="80" />
+        <li>
+        <label>Tag Value</label>
+        <input type=text name="value" size="80" />
+        </ul>
+        <input type=submit>
+    </form>
+   </body>
+ </html>
