@@ -33,11 +33,31 @@ class Entity(BaseEntity):
 
     uuid = UUIDType(required=True)
     parent_uuid = UUIDType(required=True)
+    type_ = StringType(required=True)
+    name = StringType(required=True)
+
+
+class EntityNode(Model):
+
+    def __init__(self, entity):
+        self.entity = entity
+        self.parent = None
+        self.children = []
+
+    def add_child(child):
+        self.children.append(child)
+
+    def to_primitive(self):
+        return {
+            'node': self.entity.to_primitive(),
+            'children': [child.to_primitive() for child in self.children],
+        }
 
 
 class Attribute(BaseEntity):
 
     uuid = UUIDType(required=True)
+    type_ = StringType(required=True)
     name = StringType(required=True)
     regex = StringType(required=False)
 

@@ -82,6 +82,8 @@ class Entity(Model, CreatedUpdatedTimestamp):
 
     uuid = Column(CHAR(36), primary_key=True)
     parent_uuid = Column(CHAR(36), ForeignKey('tag.uuid'), nullable=False, index=True)
+    type_ = Column(String(30), nullable=False, index=True)
+    name = Column(String(50), nullable=False, index=False)
 
 
 class Attribute(Model, CreatedUpdatedTimestamp):
@@ -89,6 +91,7 @@ class Attribute(Model, CreatedUpdatedTimestamp):
     __tablename__ = 'attribute'
 
     uuid = Column(CHAR(36), primary_key=True)
+    type_ = Column(String(30), nullable=False, index=True)
     name = Column(String(36), nullable=False, index=False)
     regex = Column(String(36), nullable=False, index=False)
 
