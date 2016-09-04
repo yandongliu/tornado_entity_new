@@ -20,8 +20,7 @@ class TagHandler(RequestHandler):
             html += '<ul>'
             for node in tag_nodes:
                 html += '<li>'
-                html += '{type_}/{name} - <a href="{uuid}">{value}</a> <a href="/http_api/add_sub/{uuid}">add</a>'.format(
-                    type_=node.tag.tag_type,
+                html += '{name} - <a href="{uuid}">{value}</a> <a href="/http_api/add_sub/{uuid}">add</a> <a href="/http_api/edit/{uuid}">edit</a>'.format(
                     uuid=node.tag.uuid,
                     name=node.tag.tag_name,
                     value=node.tag.value
@@ -36,7 +35,9 @@ class TagHandler(RequestHandler):
     def get(self, tag_uuid):
         self_node = TagRepository.read_one(tag_uuid)
         tag_nodes = TagRepository.read_chain(tag_uuid, max_depth=10)
-        html = '<html><ul>'
+        html = '<html>'
+        html += '<a href="/">HOME</a>'
+        html += '<ul>'
         if self_node:
             html += '<li>'
             html += '{} - {} - {}'.format(self_node.tag_type, self_node.tag_name, self_node.value)
@@ -75,12 +76,15 @@ class DeleteTagHandler(RequestHandler):
 class EditTagHandler(BaseHandler):
 
     @gen.coroutine
-    def get(self, tag_uuid):
+    def get(self, tag_uuid=None):
         tag = TagRepository.read_one(tag_uuid)
-        self.render("edit.html", title="Edit Node", tag=tag)
+        if tag:
+            self.render("edit.html", title="Edit Node", tag=tag)
+        else:
+            self.return_404('Tag not found')
  
     @gen.coroutine
-    def post(self):
+    def post(self, tag_uuid=None):
         tag_type = self.get_argument('tag_type')
         tag_name = self.get_argument('tag_name')
         value = self.get_argument('value')

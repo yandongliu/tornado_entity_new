@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from entities.base import Attribute, Entity, EntityAttribute
+
 
 class EntityMapper(object):
     """Base mapper for creating models automatically from a resource map."""
@@ -67,3 +69,14 @@ class EntityMapper(object):
     def to_entity_from_obj(cls, obj_resource):
         return cls.to_entity(dict(obj_resource.items()))
 
+
+class EntityMapper(EntityMapper):
+    _entity = Entity
+
+
+class AttributeMapper(EntityMapper):
+    _entity = Attribute
+
+
+class EntityAttributeMapper(EntityMapper):
+    _entity = EntityAttribute

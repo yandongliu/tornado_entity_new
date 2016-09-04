@@ -17,12 +17,9 @@ def make_application():
         (r"/api/json_api", JsonApiHandler),
         (r"/api/tag", api.TagHandler),
         (r"/api/tag/(?P<tag_uuid>[^\/]*)", api.TagHandler),
-        (r"/http_api/tag/", http_api.TagHandler),
         (r"/http_api/tag/(?P<tag_uuid>[^\/]*)", http_api.TagHandler),
         (r"/http_api/delete_tag/(?P<tag_uuid>[^\/]*)", http_api.DeleteTagHandler),
-        (r"/http_api/add_sub/", http_api.AddSubTagHandler),
         (r"/http_api/add_sub/(?P<tag_uuid>[^\/]*)", http_api.AddSubTagHandler),
-        (r"/http_api/edit/", http_api.EditTagHandler),
         (r"/http_api/edit/(?P<tag_uuid>[^\/]*)", http_api.EditTagHandler),
         (r"/async_fetch", AsyncFetchHandler),
     ], **settings)

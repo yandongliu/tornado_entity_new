@@ -25,3 +25,7 @@ class BaseHandler(RequestHandler):
         self.set_header("Content-Type", "application/json")
         self.set_status(code)
         self.write(json.dumps(data))
+
+    def return_404(self, msg='Not found'):
+        self.set_status(httplib.NOT_FOUND)
+        self.write(msg)

@@ -1,15 +1,16 @@
+from .base import BaseRepository
 from entities.tag import TagNode
 from models.base import ro_transaction, rw_transaction
 from models import Tag
 from mappers.tag import TagMapper
 
 
-class TagRepository(object):
+class TagRepository(BaseRepository):
 
     Table = Tag.__table__
 
     @classmethod
-    def read_one(cls, uuid):
+    def read_one1(cls, uuid):
         with ro_transaction() as session:
             query = cls.Table.select().where(cls.Table.c.uuid == uuid)
             row = session.execute(query).first()
@@ -51,7 +52,7 @@ class TagRepository(object):
                 return entities
 
     @classmethod
-    def upsert(cls, entity):
+    def upsert1(cls, entity):
         entity.validate()
         with rw_transaction() as session:
             _entity = cls.read_one(entity.uuid)
@@ -65,7 +66,7 @@ class TagRepository(object):
                 session.execute(query)
 
     @classmethod
-    def delete(cls, tag_uuid):
+    def delete1(cls, tag_uuid):
         with rw_transaction() as session:
             query = cls.Table.delete().where(
                 cls.Table.c.uuid == tag_uuid

@@ -1,9 +1,9 @@
 import contextlib
 import datetime
 
-from sqlalchemy import create_engine, Column, DateTime
+from sqlalchemy import create_engine, CHAR, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 
 import config
 
@@ -74,3 +74,29 @@ def ro_transaction():
     except:
         session.rollback()
         raise
+
+
+class Entity(Model, CreatedUpdatedTimestamp):
+
+    __tablename__ = 'entity'
+
+    uuid = Column(CHAR(36), primary_key=True)
+    parent_uuid = Column(CHAR(36), ForeignKey('tag.uuid'), nullable=False, index=True)
+
+
+class Attribute(Model, CreatedUpdatedTimestamp):
+
+    __tablename__ = 'attribute'
+
+    uuid = Column(CHAR(36), primary_key=True)
+    name = Column(String(36), nullable=False, index=False)
+    regex = Column(String(36), nullable=False, index=False)
+
+
+class EntityAttribute(Model, CreatedUpdatedTimestamp):
+
+    __tablename__ = 'entity_attribute'
+
+    uuid = Column(CHAR(36), primary_key=True)
+    entity_uuid = Column(CHAR(36), ForeignKey('entity.uuid'), nullable=False, index=True)
+    attribute_uuid = Column(CHAR(36), ForeignKey('attribute.uuid'), nullable=False, index=True)
