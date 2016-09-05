@@ -80,3 +80,10 @@ class AttributeMapper(EntityMapper):
 
 class EntityAttributeMapper(EntityMapper):
     _entity = EntityAttribute
+
+    @classmethod
+    def to_entity_from_obj_join(cls, obj, e, a, ea):
+        import pdb; pdb.set_trace()
+        print obj[e.c.uuid]
+        print obj[a.c.uuid]
+        print obj[ea.c.uuid]

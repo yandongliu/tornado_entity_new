@@ -1,0 +1,24 @@
+<html>
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <body>
+     <form action='/http_api/entity/add_sub/' method="POST">
+        <ul>
+        <li>
+        <label>UUID</label>
+        <input type=text name="uuid" size="80" value="{{random_uuid}}" />
+        <li>
+        <label>Parent UUID</label>
+        <input type=text name="parent_uuid" size="80" value="{{entity.uuid}}"/>
+        <li>
+        <label>Type</label>
+        <input type=text name="type_" size="80" />
+        <li>
+        <label>Name</label>
+        <input type=text name="name" size="80" />
+        </ul>
+        <input type=submit>
+    </form>
+   </body>
+ </html>

@@ -4,7 +4,7 @@ import tornado.ioloop
 import tornado.web
 
 import config
-from handlers import api, http_api
+from handlers import api, http_api_attr, http_api_entity
 from handlers.async_fetch import AsyncFetchHandler
 from handlers.main import MainHandler
 from handlers.json_api import JsonApiHandler
@@ -17,10 +17,11 @@ def make_application():
         (r"/api/json_api", JsonApiHandler),
         (r"/api/tag", api.TagHandler),
         (r"/api/tag/(?P<tag_uuid>[^\/]*)", api.TagHandler),
-        (r"/http_api/tag/(?P<tag_uuid>[^\/]*)", http_api.TagHandler),
-        (r"/http_api/delete_tag/(?P<tag_uuid>[^\/]*)", http_api.DeleteTagHandler),
-        (r"/http_api/add_sub/(?P<tag_uuid>[^\/]*)", http_api.AddSubTagHandler),
-        (r"/http_api/edit/(?P<tag_uuid>[^\/]*)", http_api.EditTagHandler),
+        (r"/http_api/entity/(?P<uuid>[^\/]*)", http_api_entity.ShowHandler),
+        (r"/http_api/entity/delete/(?P<uuid>[^\/]*)", http_api_entity.DeleteHandler),
+        (r"/http_api/entity/add_sub/(?P<uuid>[^\/]*)", http_api_entity.AddSubHandler),
+        (r"/http_api/entity/edit/(?P<uuid>[^\/]*)", http_api_entity.EditHandler),
+        (r"/http_api/attr/(?P<uuid>[^\/]*)", http_api_attr.ShowHandler),
         (r"/async_fetch", AsyncFetchHandler),
     ], **settings)
     return _app

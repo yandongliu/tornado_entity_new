@@ -4,6 +4,7 @@ import uuid
 from schematics.exceptions import ValidationError
 from schematics.models import Model
 from schematics.types import DateTimeType, StringType, UUIDType
+from schematics.types.compound import ListType, ModelType
 
 
 class UuidStringType(StringType):
@@ -23,29 +24,52 @@ class UuidStringType(StringType):
         return str(uuid.uuid4())
 
 
-class BaseEntity(Model):
+class Base(Model):
+    """When you want to manage the two timestamps, extend from this class"""
 
     created_at = DateTimeType(default=datetime.utcnow, required=True)
     updated_at = DateTimeType(default=datetime.utcnow, required=True)
 
 
-class Entity(BaseEntity):
+# We let MySQL manage created_at/updated_at
+class Attribute(Model):
+
+    uuid = UUIDType(required=True)
+    type_ = StringType(required=True)
+    name = StringType(required=True)
+    regex = StringType(required=False)
+
+
+class Entity(Model):
 
     uuid = UUIDType(required=True)
     parent_uuid = UUIDType(required=True)
     type_ = StringType(required=True)
     name = StringType(required=True)
 
+    attributes = ListType(ModelType(Attribute))
+
+    def get_attributes(self):
+        return ' '.join(attr.name for attr in self.attributes)
+
+    def get_attributes_html(self):
+        s = ''
+        for attr in self.attributes:
+            s += ' <a href="/http_api/attr/{}">{}</a>'.format(attr.uuid, attr.name)
+        return s
 
 class EntityNode(Model):
 
-    def __init__(self, entity):
+    def __init__(self, entity, children=None):
         self.entity = entity
-        self.parent = None
-        self.children = []
+        # self.parent = None
+        if not children:
+            self.children = []
+        else:
+            self.children = children
 
-    def add_child(child):
-        self.children.append(child)
+    def add_child(node):
+        self.children.append(node)
 
     def to_primitive(self):
         return {
@@ -54,16 +78,11 @@ class EntityNode(Model):
         }
 
 
-class Attribute(BaseEntity):
-
-    uuid = UUIDType(required=True)
-    type_ = StringType(required=True)
-    name = StringType(required=True)
-    regex = StringType(required=False)
-
-
-class EntityAttribute(BaseEntity):
+class EntityAttribute(Model):
 
     uuid = UUIDType(required=True)
     entity_uuid = UUIDType(required=True)
     attribute_uuid = UUIDType(required=True)
+
+    entity = ModelType(Entity)
+    # attribute = ModelType(Attribute)

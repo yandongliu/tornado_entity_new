@@ -1,0 +1,45 @@
+<html>
+   <head>
+      <title>{{title}}</title>
+   </head>
+   <body>
+     <table>
+        <tr> <th>chain</th> <th>parent</th> <th>entity type(enum)</th> <th>entity name(display)</th> <th>sub</th> <th>delete</th> <th>edit</th></tr>
+       {% for entity in entities %}
+         <tr><td><a href="/http_api/entity/{{entity.entity.uuid}}">chain</a></td> <td><a href="/http_api/entity/{{entity.entity.parent_uuid}}">parent</a></td> <td>{{entity.entity.type_}}</td> <td>{{entity.entity.name}}</td> <td><a href="http_api/add_sub/{{entity.entity.uuid}}">add</a></td> <td><a href="http_api/delete_entity/{{entity.entity.uuid}}">delete</a></td> <td><a href="http_api/edit/{{entity.entity.uuid}}">edit</a></td> <td>attrs:{{entity.entity.get_attributes_html()}}</td></tr>
+       {% end %}
+     </table>
+<hr/>
+<p>Add a top category</p>
+     <form action='/http_api/entity/' method="POST">
+        <label>entity UUID</label>
+        <input type=text name="uuid" value="{{random_uuid}}" />
+        <label>Parent UUID</label>
+        <input type=text name="parent_uuid" value="{{root_uuid}}"/>
+        <label>entity Type</label>
+        <input type=text name="type_" />
+        <label>entity Name</label>
+        <input type=text name="name" />
+        <br/>
+        <input type=submit>
+    </form>
+<hr/>
+<p>Add an attribute</p>
+     <form action='/http_api/attr/' method="POST">
+        <label>UUID</label>
+        <input type=text name="uuid" value="{{random_uuid}}" />
+        <label>Type</label>
+        <input type=text name="type_" />
+        <label>Name</label>
+        <input type=text name="name" />
+        <label>Regex</label>
+        <input type=text name="regex" />
+        <br/>
+        <input type=submit>
+    </form>
+<hr/>
+<p>
+Everything is a entity including category and entities, making everything extensible.
+</p>
+   </body>
+ </html>

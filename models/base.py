@@ -3,7 +3,7 @@ import datetime
 
 from sqlalchemy import create_engine, CHAR, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, scoped_session, sessionmaker
+from sqlalchemy.orm import relation, relationship, scoped_session, sessionmaker
 
 import config
 
@@ -76,7 +76,7 @@ def ro_transaction():
         raise
 
 
-class Entity(Model, CreatedUpdatedTimestamp):
+class Entity(Model):
 
     __tablename__ = 'entity'
 
@@ -85,8 +85,14 @@ class Entity(Model, CreatedUpdatedTimestamp):
     type_ = Column(String(30), nullable=False, index=True)
     name = Column(String(50), nullable=False, index=False)
 
+    # attributes = relationship(
+    #     'attribute',
+    #     foreign_keys='entity_attribute.attri',
+    #     lazy='joined'
+    # )
 
-class Attribute(Model, CreatedUpdatedTimestamp):
+
+class Attribute(Model):
 
     __tablename__ = 'attribute'
 
@@ -96,10 +102,16 @@ class Attribute(Model, CreatedUpdatedTimestamp):
     regex = Column(String(36), nullable=False, index=False)
 
 
-class EntityAttribute(Model, CreatedUpdatedTimestamp):
+class EntityAttribute(Model):
 
     __tablename__ = 'entity_attribute'
 
     uuid = Column(CHAR(36), primary_key=True)
     entity_uuid = Column(CHAR(36), ForeignKey('entity.uuid'), nullable=False, index=True)
     attribute_uuid = Column(CHAR(36), ForeignKey('attribute.uuid'), nullable=False, index=True)
+
+    # entity = relationship('Entity')
+    entity = relationship(
+        'Entity',
+        foreign_keys='entity.uuid',
+        lazy='joined')
